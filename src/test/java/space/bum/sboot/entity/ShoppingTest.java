@@ -44,13 +44,29 @@ class ShoppingTest {
   void whenItem2PutIntoCart1_thenItResultInconsistency() {
     Cart cart1 = new Cart();
     Cart cart2 = new Cart();
-
+    
+    session.persist(cart1);
+    session.persist(cart2);
+    
     Item item1 = new Item(cart1);
     Item item2 = new Item(cart2); 
+    
     Set<Item> itemsSet = new HashSet<Item>();
     itemsSet.add(item1);
     itemsSet.add(item2); // item2 는 cart2 에 있는 줄 아는데
     cart1.setItems(itemsSet); // cart1 으로 들어가고 있다.
+    
+    session.persist(item1);
+    session.persist(item2);
+    session.flush();
+    
+    Item item2Read = session.find(Item.class, item2.getItem_id());
+    Cart item2Cart = item2Read.getCart();
+    assertEquals(cart2.getCart_id(), item2Cart.getCart_id());
+    
+    Cart cart2Read = session.find(Cart.class, cart2.getCart_id());
+    Set<Item> cart2items = cart2Read.getItems();
+    assertEquals(1, cart2items.size());
   }
   
   @Test
