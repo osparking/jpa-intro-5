@@ -41,4 +41,8 @@ public class Item {
   public int hashCode() {
     return Objects.hash(item_id);
   }
+
+  public Item(Cart cart) {
+    this.cart = cart;
+  }
 }

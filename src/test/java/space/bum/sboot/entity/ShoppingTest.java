@@ -40,6 +40,20 @@ class ShoppingTest {
   }
 
   @Test
+  @Transactional  
+  void whenItem2PutIntoCart1_thenItResultInconsistency() {
+    Cart cart1 = new Cart();
+    Cart cart2 = new Cart();
+
+    Item item1 = new Item(cart1);
+    Item item2 = new Item(cart2); 
+    Set<Item> itemsSet = new HashSet<Item>();
+    itemsSet.add(item1);
+    itemsSet.add(item2); // item2 는 cart2 에 있는 줄 아는데
+    cart1.setItems(itemsSet); // cart1 으로 들어가고 있다.
+  }
+  
+  @Test
   @Transactional
   void whenCartOfOneItemSavedAndRead_thenOneItemFoundInIt_then_Ok() {    
     var cartRead = session.find(Cart.class, cartId);
