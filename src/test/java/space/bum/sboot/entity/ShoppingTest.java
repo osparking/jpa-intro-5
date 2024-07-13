@@ -70,6 +70,32 @@ class ShoppingTest {
   }
   
   @Test
+  @Transactional  
+  void whenItem2PutIntoCart1_thenItResultInconsistency2() {
+    CartOIO cart1 = new CartOIO();
+    CartOIO cart2 = new CartOIO();
+    
+    session.persist(cart1);
+    session.persist(cart2);
+    
+    ItemOIO item1 = new ItemOIO(cart1);
+    ItemOIO item2 = new ItemOIO(cart2); 
+    
+    Set<ItemOIO> itemsSet = new HashSet<ItemOIO>();
+    itemsSet.add(item1);
+    itemsSet.add(item2); // item2 는 cart2 에 있는 줄 아는데
+    cart1.setItems(itemsSet); // cart1 으로 들어가고 있다.
+    
+    session.persist(item1);
+    session.persist(item2);
+    session.flush();
+    
+    ItemOIO item2Read = session.find(ItemOIO.class, item2.getItemId());
+    CartOIO item2Cart = item2Read.getCart();
+    assertEquals(cart2.getCart_id(), item2Cart.getCart_id());
+  }
+  
+  @Test
   @Transactional
   void whenCartOfOneItemSavedAndRead_thenOneItemFoundInIt_then_Ok() {    
     var cartRead = session.find(Cart.class, cartId);
