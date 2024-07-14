@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import space.bum.sboot.config.Direction;
+import space.bum.sboot.enums.NullOrder;
 import space.bum.sboot.repo.SoapOrderRepository;
 
 @RestController
@@ -37,5 +38,12 @@ public class SoapOrderController {
     } else {
       return soRepo.getOrderSortByCount(Direction.ASC);
     }
+  }
+
+  @GetMapping(value = { "/customer", "/customer/{null_order}" })
+  public List<SoapOrder> findOrderSortByCustomer(
+      @PathVariable(required = false) String null_order) {
+    var nullOrder = NullOrder.valueOf(null_order.toUpperCase());
+    return soRepo.getOrderSortByCustomer(nullOrder);
   }
 }
