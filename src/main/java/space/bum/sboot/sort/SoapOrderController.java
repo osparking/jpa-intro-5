@@ -18,7 +18,7 @@ public class SoapOrderController {
   @Autowired
   private SoapOrderRepository soRepo;
 
-  @GetMapping(value = {"/id", "/id/{direction}"})
+  @GetMapping(value = { "/id", "/id/", "/id/{direction}" })
   public List<SoapOrder> findOrderedSoapOrders(
       @PathVariable(required = false) String direction) {
     if ("desc".equalsIgnoreCase(direction)) {
@@ -26,6 +26,16 @@ public class SoapOrderController {
     } else {
       return soRepo.getSortedSoapOrders(Direction.ASC);
     }
-    
+
+  }
+
+  @GetMapping(value = { "/count", "/count/{direction}" })
+  public List<SoapOrder> findOrderSortByCount(
+      @PathVariable(required = false) String direction) {
+    if ("desc".equalsIgnoreCase(direction)) {
+      return soRepo.getOrderSortByCount(Direction.DESC);
+    } else {
+      return soRepo.getOrderSortByCount(Direction.ASC);
+    }
   }
 }
