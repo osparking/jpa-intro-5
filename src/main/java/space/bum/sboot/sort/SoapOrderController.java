@@ -18,9 +18,9 @@ public class SoapOrderController {
   @Autowired
   private SoapOrderRepository soRepo;
 
-  @GetMapping("/id/{direction}")
+  @GetMapping(value = {"/id", "/id/{direction}"})
   public List<SoapOrder> findOrderedSoapOrders(
-      @PathVariable(name = "direction") String direction) {
+      @PathVariable(required = false) String direction) {
     if ("desc".equalsIgnoreCase(direction)) {
       return soRepo.getSortedSoapOrders(Direction.DESC);
     } else {
