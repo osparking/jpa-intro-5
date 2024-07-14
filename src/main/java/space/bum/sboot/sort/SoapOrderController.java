@@ -43,7 +43,10 @@ public class SoapOrderController {
   @GetMapping(value = { "/customer", "/customer/{null_order}" })
   public List<SoapOrder> findOrderSortByCustomer(
       @PathVariable(required = false) String null_order) {
-    var nullOrder = NullOrder.valueOf(null_order.toUpperCase());
+    var nullOrder = NullOrder.LAST;
+    if (null_order != null) {
+      nullOrder = NullOrder.valueOf(null_order.toUpperCase());
+    }
     return soRepo.getOrderSortByCustomer(nullOrder);
   }
 }
