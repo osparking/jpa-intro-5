@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import space.bum.sboot.config.Direction;
+import space.bum.sboot.enums.NullOrder;
 import space.bum.sboot.sort.SoapOrder;
 
 @Repository
@@ -39,6 +40,23 @@ public class SoapOrderRepository {
     jsql.append(jql);
     if (direction == Direction.DESC) {
       jsql.append(" desc");
+    }
+
+    Query sortedSoapQuery = em.createQuery(jsql.toString(), SoapOrder.class);
+    List<SoapOrder> results = sortedSoapQuery.getResultList();
+
+    return results;
+  }
+
+  public List<SoapOrder> getOrderSortByCustomer(NullOrder null_order) {
+    String jql = "Select so from SoapOrder as so order by so.customer";
+    StringBuffer jsql = new StringBuffer();
+
+    jsql.append(jql);
+    if (null_order == NullOrder.FIRST) {
+      jsql.append(" NULLS FIRST");
+    } else if (null_order == NullOrder.LAST) {
+      jsql.append(" NULLS LAST");
     }
 
     Query sortedSoapQuery = em.createQuery(jsql.toString(), SoapOrder.class);
