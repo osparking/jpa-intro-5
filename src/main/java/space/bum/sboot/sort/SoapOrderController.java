@@ -58,5 +58,9 @@ public class SoapOrderController {
   public List<Customer> findAllCustomers() {
     return custRepository.getCustomers();
   }
-
+  
+  @GetMapping(value = { "/count/criteria" })
+  public List<SoapOrder> findSoapOrdersSortedByCountInCriteriaQuery() {
+    return soRepo.getSoapOrdersSortedByCount();
+  }
 }
