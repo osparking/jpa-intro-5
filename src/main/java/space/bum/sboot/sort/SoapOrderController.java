@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import space.bum.sboot.config.Direction;
 import space.bum.sboot.enums.NullOrder;
+import space.bum.sboot.repo.CustomerRepository;
 import space.bum.sboot.repo.SoapOrderRepository;
 
 @RestController
@@ -18,6 +19,9 @@ public class SoapOrderController {
 
   @Autowired
   private SoapOrderRepository soRepo;
+  
+  @Autowired
+  private CustomerRepository custRepository;
 
   @GetMapping(value = { "/id", "/id/", "/id/{direction}" })
   public List<SoapOrder> findOrderedSoapOrders(
@@ -49,4 +53,10 @@ public class SoapOrderController {
     }
     return soRepo.getOrderSortByCustomer(nullOrder);
   }
+
+  @GetMapping(value = { "/customers" })
+  public List<Customer> findAllCustomers() {
+    return custRepository.getCustomers();
+  }
+
 }
