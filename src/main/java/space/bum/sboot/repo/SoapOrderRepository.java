@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import space.bum.sboot.config.Direction;
 import space.bum.sboot.enums.NullOrder;
 import space.bum.sboot.sort.SoapOrder;
@@ -63,5 +67,16 @@ public class SoapOrderRepository {
     List<SoapOrder> results = sortedSoapQuery.getResultList();
 
     return results;
+  }
+
+  public List<SoapOrder> getSoapOrdersSortedByCount() {
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaQuery<SoapOrder> criteriaQuery = cb.createQuery(SoapOrder.class);
+    Root<SoapOrder> from = criteriaQuery.from(SoapOrder.class);
+    CriteriaQuery<SoapOrder> select = criteriaQuery.select(from);
+    select.orderBy(cb.asc(from.get("soapCount")));
+    TypedQuery<SoapOrder> query = em.createQuery(select);
+    List<SoapOrder> soList = query.getResultList();
+    return soList;
   }
 }
