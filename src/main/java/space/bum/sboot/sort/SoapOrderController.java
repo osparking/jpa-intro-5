@@ -19,7 +19,7 @@ public class SoapOrderController {
 
   @Autowired
   private SoapOrderRepository soRepo;
-  
+
   @Autowired
   private CustomerRepository custRepository;
 
@@ -58,9 +58,14 @@ public class SoapOrderController {
   public List<Customer> findAllCustomers() {
     return custRepository.getCustomers();
   }
-  
+
   @GetMapping(value = { "/count/criteria" })
   public List<SoapOrder> findSoapOrdersSortedByCountInCriteriaQuery() {
     return soRepo.getSoapOrdersSortedByCount();
+  }
+
+  @GetMapping(value = { "/count/sort2col" })
+  public List<SoapOrder> getSoapOrdersSortedByTwoColumns() {
+    return soRepo.getSoapOrdersSortedByTwoColumns();
   }
 }
