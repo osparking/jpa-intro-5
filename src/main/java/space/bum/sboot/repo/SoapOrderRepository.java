@@ -85,7 +85,7 @@ public class SoapOrderRepository {
     CriteriaQuery<SoapOrder> sos2colSorted = cb.createQuery(SoapOrder.class);
     Root<SoapOrder> from = sos2colSorted.from(SoapOrder.class);
     CriteriaQuery<SoapOrder> select = sos2colSorted.select(from);
-    select.orderBy(cb.asc(from.get("customer.customer_id")),
+    select.orderBy(cb.asc(from.get("customer")),
         cb.desc(from.get("soapCount")));
     TypedQuery<SoapOrder> query = em.createQuery(select);
     List<SoapOrder> soList = query.getResultList();
